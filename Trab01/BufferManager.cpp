@@ -1,13 +1,8 @@
-/**
- * =============================================================================
- * Arquivo : BufferManager.cpp
- * Autora  : Kenia
- * Data    : 29/03/2026
- * Descr.  : Implementação completa da classe BufferManager. Contém a lógica de
- *           busca (Fetch), substituição (Evict) com quatro políticas (LRU, FIFO,
- *           CLOCK, MRU), exibição do cache e estatísticas de desempenho.
- * =============================================================================
- */
+/*
+Implementação completa da classe BufferManager. Contém a lógica de
+busca (Fetch), substituição (Evict) com quatro políticas (LRU, FIFO,
+CLOCK, MRU), exibição do cache e estatísticas de desempenho.
+*/
 
 #include "BufferManager.h"
 #include <iostream>
@@ -17,10 +12,7 @@
 #include <iomanip>
 #include <stdexcept>
 
-// =============================================================================
 // Construtor
-// =============================================================================
-
 BufferManager::BufferManager(const std::string& caminhoArquivo, ReplacementPolicy politica)
     : policy_(politica)
     , globalClock_(0)
@@ -34,10 +26,7 @@ BufferManager::BufferManager(const std::string& caminhoArquivo, ReplacementPolic
     loadFile(caminhoArquivo);
 }
 
-// =============================================================================
 // Carregamento do arquivo de dados
-// =============================================================================
-
 void BufferManager::loadFile(const std::string& caminhoArquivo) {
     std::ifstream arquivo(caminhoArquivo);
     if (!arquivo.is_open()) {
@@ -57,10 +46,7 @@ void BufferManager::loadFile(const std::string& caminhoArquivo) {
               << " paginas disponiveis.\n" << std::endl;
 }
 
-// =============================================================================
 // Busca de página no buffer
-// =============================================================================
-
 int BufferManager::findInBuffer(int key) const {
     for (size_t i = 0; i < buffer_.size(); ++i) {
         if (buffer_[i].page_id == key) {
@@ -70,10 +56,7 @@ int BufferManager::findInBuffer(int key) const {
     return -1; // Página não encontrada no buffer
 }
 
-// =============================================================================
 // Fetch — Operação principal de busca/carregamento de página
-// =============================================================================
-
 std::string BufferManager::Fetch(int key) {
     // Incrementa o relógio lógico global a cada operação Fetch
     ++globalClock_;
@@ -89,9 +72,7 @@ std::string BufferManager::Fetch(int key) {
     int idx = findInBuffer(key);
 
     if (idx >= 0) {
-        // =====================================================================
         // CACHE HIT — Página encontrada no buffer
-        // =====================================================================
         ++cacheHit_;
         std::cout << "[HIT]  Pagina " << key << " encontrada no buffer.\n";
 
@@ -116,9 +97,7 @@ std::string BufferManager::Fetch(int key) {
         return buffer_[static_cast<size_t>(idx)].content;
     }
 
-    // =========================================================================
     // CACHE MISS — Página não encontrada no buffer
-    // =========================================================================
     ++cacheMiss_;
     std::cout << "[MISS] Pagina " << key << " nao encontrada. Carregando do disco...\n";
 
@@ -142,10 +121,7 @@ std::string BufferManager::Fetch(int key) {
     return novaPagina.content;
 }
 
-// =============================================================================
 // Evict — Substituição de página
-// =============================================================================
-
 void BufferManager::Evict() {
     // Seleciona a vítima conforme a política ativa
     size_t victimIdx = 0;
@@ -184,10 +160,7 @@ void BufferManager::Evict() {
     }
 }
 
-// =============================================================================
 // Seleção de vítima — LRU (Least Recently Used)
-// =============================================================================
-
 size_t BufferManager::selectVictimLRU() const {
     // Encontra a página com o menor timestamp (menos recentemente usada)
     size_t victimIdx = 0;
@@ -203,10 +176,7 @@ size_t BufferManager::selectVictimLRU() const {
     return victimIdx;
 }
 
-// =============================================================================
 // Seleção de vítima — FIFO (First In, First Out)
-// =============================================================================
-
 size_t BufferManager::selectVictimFIFO() const {
     // Encontra a página com o menor fifo_order (primeira a entrar)
     size_t victimIdx = 0;
@@ -222,10 +192,7 @@ size_t BufferManager::selectVictimFIFO() const {
     return victimIdx;
 }
 
-// =============================================================================
 // Seleção de vítima — CLOCK (Second-Chance)
-// =============================================================================
-
 size_t BufferManager::selectVictimClock() {
     // Percorre circularmente o buffer até encontrar uma página com ref_bit == FALSE
     while (true) {
@@ -243,10 +210,7 @@ size_t BufferManager::selectVictimClock() {
     }
 }
 
-// =============================================================================
 // Seleção de vítima — MRU (Most Recently Used)
-// =============================================================================
-
 size_t BufferManager::selectVictimMRU() const {
     // Encontra a página com o maior timestamp (mais recentemente usada)
     size_t victimIdx = 0;
@@ -262,10 +226,7 @@ size_t BufferManager::selectVictimMRU() const {
     return victimIdx;
 }
 
-// =============================================================================
 // DisplayCache — Exibição do conteúdo do buffer
-// =============================================================================
-
 void BufferManager::DisplayCache() const {
     std::cout << "\n";
     std::cout << "+----------------------------------------------+\n";
@@ -304,17 +265,13 @@ void BufferManager::DisplayCache() const {
     std::cout << "\n";
 }
 
-// =============================================================================
 // DisplayStats -- Exibicao de estatisticas
-// =============================================================================
-
 void BufferManager::DisplayStats() const {
     size_t totalAcessos = cacheHit_ + cacheMiss_;
     double taxaAcerto = (totalAcessos > 0)
         ? (static_cast<double>(cacheHit_) / static_cast<double>(totalAcessos)) * 100.0
         : 0.0;
 
-    // Formata a taxa como string para controle preciso da largura
     std::ostringstream taxaStr;
     taxaStr << std::fixed << std::setprecision(2) << taxaAcerto << " %";
 
@@ -329,10 +286,7 @@ void BufferManager::DisplayStats() const {
     std::cout << "+------------------------------------------+\n\n";
 }
 
-// =============================================================================
 // Nome da política (para exibição)
-// =============================================================================
-
 std::string BufferManager::policyName() const {
     switch (policy_) {
         case ReplacementPolicy::LRU:   return "LRU";

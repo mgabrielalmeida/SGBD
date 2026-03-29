@@ -1,25 +1,20 @@
-/**
- * =============================================================================
- * Arquivo : Page.h
- * Autora  : Kenia
- * Data    : 29/03/2026
- * Descr.  : Definição da struct Page, representando uma página no buffer pool.
- *           Cada página armazena seu identificador, conteúdo lido do arquivo,
- *           flag de atualização (dirty), bit de referência (CLOCK), timestamp
- *           lógico (LRU/MRU) e ordem de inserção (FIFO).
- * =============================================================================
- */
+/*
+Definição da struct Page, representando uma página no buffer pool.
+Cada página armazena seu identificador, conteúdo lido do arquivo,
+flag de atualização (dirty), bit de referência (CLOCK), timestamp
+lógico (LRU/MRU) e ordem de inserção (FIFO).
+*/
 
 #pragma once
 
 #include <string>
 #include <cstddef>
 
-/**
- * Struct que representa uma página carregada no buffer pool.
- * Contém todos os metadados necessários para as quatro políticas
- * de substituição (LRU, FIFO, CLOCK, MRU).
- */
+/*
+Struct que representa uma página carregada no buffer pool.
+Contém todos os metadados necessários para as quatro políticas
+de substituição (LRU, FIFO, CLOCK, MRU).
+*/
 struct Page {
     int       page_id;     // Identificador único da página (número da linha no arquivo)
     std::string content;   // Conteúdo textual da página (linha lida do arquivo)

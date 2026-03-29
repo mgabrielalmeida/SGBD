@@ -23,7 +23,6 @@ ESTRUTURA DE ARQUIVOS
   BufferManager.cpp — Implementação completa do gerenciador de buffer
   main.cpp          — Interface interativa via linha de comando (CLI)
   Makefile          — Regras de compilação
-  data.txt          — Arquivo de dados de exemplo (25 linhas)
   README.txt        — Este arquivo
 
 
@@ -72,9 +71,6 @@ As páginas são numeradas a partir de 1 (1-based index). Ou seja:
   - Linha 1 do arquivo = Página 1
   - Linha 2 do arquivo = Página 2
   - ...e assim por diante.
-
-O arquivo data.txt fornecido contém 25 linhas de registros simulados de um
-banco de dados (clientes, pedidos, logs, etc.).
 
 
 SEQUÊNCIA DE TESTE PADRÃO

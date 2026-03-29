@@ -1,13 +1,8 @@
-/**
- * =============================================================================
- * Arquivo : main.cpp
- * Autora  : Kenia
- * Data    : 29/03/2026
- * Descr.  : Programa principal com CLI interativa para o Gerenciador de Buffer.
- *           Permite selecionar a política de substituição, executar sequências
- *           de Fetch, e visualizar o estado do buffer e estatísticas.
- * =============================================================================
- */
+/*
+Programa principal com CLI interativa para o Gerenciador de Buffer.
+Permite selecionar a política de substituição, executar sequências
+de Fetch, e visualizar o estado do buffer e estatísticas.
+*/
 
 #include "BufferManager.h"
 #include <iostream>
@@ -19,14 +14,10 @@
 // Funções auxiliares do menu
 // =============================================================================
 
-/**
- * Exibe o banner inicial do programa.
- */
+// Exibe o banner inicial do programa.
 void exibirBanner() {
-    // Largura interna do banner (entre as barras |)
     const int W = 60;
 
-    // Monta a linha dinamica com a capacidade do buffer
     std::ostringstream capLine;
     capLine << "  Capacidade do buffer: " << BUFFER_CAPACITY << " paginas";
     std::string capStr = capLine.str();
@@ -48,10 +39,7 @@ void exibirBanner() {
     std::cout << "+" << std::string(W, '=') << "+\n\n";
 }
 
-/**
- * Solicita ao usuário o caminho do arquivo de dados.
- * @return Caminho do arquivo informado pelo usuário.
- */
+// Solicita ao usuário o caminho do arquivo de dados.
 std::string solicitarArquivo() {
     std::string caminho;
     std::cout << "Informe o caminho do arquivo de dados (ex: data.txt): ";
@@ -59,10 +47,7 @@ std::string solicitarArquivo() {
     return caminho;
 }
 
-/**
- * Solicita ao usuário a política de substituição desejada.
- * @return Política selecionada.
- */
+// Solicita ao usuário a política de substituição desejada.
 ReplacementPolicy solicitarPolitica() {
     int opcao = 0;
 
@@ -95,9 +80,7 @@ ReplacementPolicy solicitarPolitica() {
     }
 }
 
-/**
- * Exibe o menu principal de operações.
- */
+// Exibe o menu principal de operações.
 void exibirMenu() {
     std::cout << "--------------------------------------------\n";
     std::cout << "  MENU DE OPERACOES\n";
@@ -112,13 +95,10 @@ void exibirMenu() {
     std::cout << "Opcao: ";
 }
 
-/**
- * Executa a sequência de teste especificada no enunciado do trabalho:
- * Fetch: 1, 2, 3, 4, 5, 1, 6, 2, 7, 3, 1, 8, 4, 9, 5
- * Com checkpoints nos pontos determinados.
- */
+// Executa uma sequência de testes específica:
+// Fetch: 1, 2, 3, 4, 5, 1, 6, 2, 7, 3, 1, 8, 4, 9, 5
+// Com checkpoints nos pontos determinados. (quinto, oitavo e último fetch)
 void executarTestePadrao(BufferManager& bm) {
-    // Sequência completa de teste
     const int sequencia[] = {1, 2, 3, 4, 5, 1, 6, 2, 7, 3, 1, 8, 4, 9, 5};
     const size_t tamanho = sizeof(sequencia) / sizeof(sequencia[0]);
 

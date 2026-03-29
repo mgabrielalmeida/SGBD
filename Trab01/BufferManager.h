@@ -1,13 +1,8 @@
-/**
- * =============================================================================
- * Arquivo : BufferManager.h
- * Autora  : Kenia
- * Data    : 29/03/2026
- * Descr.  : Declaração da classe BufferManager, responsável por gerenciar um
- *           buffer pool de tamanho fixo com suporte a quatro políticas de
- *           substituição de página: LRU, FIFO, CLOCK e MRU.
- * =============================================================================
- */
+/*
+Declaração da classe BufferManager, responsável por gerenciar um
+buffer pool de tamanho fixo com suporte a quatro políticas de
+substituição de página: LRU, FIFO, CLOCK e MRU.
+*/
 
 #pragma once
 
@@ -19,9 +14,7 @@
 // Capacidade máxima do buffer pool (número de páginas simultâneas)
 constexpr size_t BUFFER_CAPACITY = 5;
 
-/**
- * Enumeração das políticas de substituição de página disponíveis.
- */
+// Enumeração das políticas de substituição de página disponíveis.
 enum class ReplacementPolicy {
     LRU,    // Least Recently Used
     FIFO,   // First In, First Out
@@ -29,39 +22,21 @@ enum class ReplacementPolicy {
     MRU     // Most Recently Used
 };
 
-/**
- * Classe que implementa o Gerenciador de Buffer.
- *
- * Responsável por manter um pool de páginas em memória, carregar páginas
- * sob demanda a partir de um arquivo de dados, e substituir páginas
- * conforme a política selecionada quando o buffer está cheio.
- */
+// Classe que implementa o Gerenciador de Buffer.
 class BufferManager {
 public:
-    /**
-     * Construtor.
-     * @param caminhoArquivo Caminho para o arquivo de dados (cada linha = uma página).
-     * @param politica       Política de substituição a ser utilizada.
-     */
+    // Construtor.
     BufferManager(const std::string& caminhoArquivo, ReplacementPolicy politica);
 
-    /**
-     * Busca uma página pelo seu identificador (chave).
-     * Se a página estiver no buffer (HIT), retorna seu conteúdo e atualiza metadados.
-     * Se não estiver (MISS), carrega do arquivo, possivelmente evictando outra página.
-     * @param key Identificador da página (número da linha, 1-based).
-     * @return Conteúdo textual da página.
-     */
+    // Busca uma página pelo seu identificador (chave).
+    // Se a página estiver no buffer (HIT), retorna seu conteúdo e atualiza metadados.
+    // Se não estiver (MISS), carrega do arquivo, possivelmente evictando outra página.
     std::string Fetch(int key);
 
-    /**
-     * Exibe todas as páginas atualmente no buffer, com seus metadados.
-     */
+    // Exibe todas as páginas atualmente no buffer, com seus metadados.
     void DisplayCache() const;
 
-    /**
-     * Exibe estatísticas de desempenho do buffer (hits, misses, taxa de acerto).
-     */
+    // Exibe estatísticas de desempenho do buffer (hits, misses, taxa de acerto).
     void DisplayStats() const;
 
 private:
@@ -85,22 +60,14 @@ private:
 
     // --- Métodos auxiliares ---
 
-    /**
-     * Carrega todas as linhas do arquivo para o vetor fileLines_.
-     * @param caminhoArquivo Caminho do arquivo de dados.
-     */
+    // Carrega todas as linhas do arquivo para o vetor fileLines_.
     void loadFile(const std::string& caminhoArquivo);
 
-    /**
-     * Procura uma página no buffer pelo page_id.
-     * @param key Identificador da página.
-     * @return Índice no vetor buffer_, ou -1 se não encontrada.
-     */
+    // Procura uma página no buffer pelo page_id.
+    // Retorna Índice no vetor buffer_, ou -1 se não encontrada.
     int findInBuffer(int key) const;
 
-    /**
-     * Seleciona e remove a página vítima do buffer conforme a política ativa.
-     */
+    // Seleciona e remove a página vítima do buffer conforme a política ativa.
     void Evict();
 
     // --- Seleção de vítima por política ---
@@ -109,9 +76,7 @@ private:
     size_t selectVictimClock();       // Modifica clockHand_, portanto não é const
     size_t selectVictimMRU() const;
 
-    /**
-     * Retorna o nome da política como string (para exibição).
-     */
+    // Retorna o nome da política como string (para exibição).
     std::string policyName() const;
 };
 
