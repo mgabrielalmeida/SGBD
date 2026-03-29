@@ -12,6 +12,7 @@
 #include "BufferManager.h"
 #include <iostream>
 #include <sstream>
+#include <iomanip>
 #include <limits>
 
 // =============================================================================
@@ -22,22 +23,29 @@
  * Exibe o banner inicial do programa.
  */
 void exibirBanner() {
+    // Largura interna do banner (entre as barras |)
+    const int W = 60;
+
+    // Monta a linha dinamica com a capacidade do buffer
+    std::ostringstream capLine;
+    capLine << "  Capacidade do buffer: " << BUFFER_CAPACITY << " paginas";
+    std::string capStr = capLine.str();
+
     std::cout << "\n";
-    std::cout << "+============================================================+\n";
-    std::cout << "|                                                            |\n";
-    std::cout << "|           GERENCIADOR DE BUFFER - SGBD 2026.1              |\n";
-    std::cout << "|           Universidade Federal do Ceara (UFC)              |\n";
-    std::cout << "|                                                            |\n";
-    std::cout << "+============================================================+\n";
-    std::cout << "|  Simulador de Buffer Pool com politicas de substituicao:   |\n";
-    std::cout << "|    * LRU  (Least Recently Used)                            |\n";
-    std::cout << "|    * FIFO (First In, First Out)                            |\n";
-    std::cout << "|    * CLOCK (Second-Chance)                                 |\n";
-    std::cout << "|    * MRU  (Most Recently Used)                             |\n";
-    std::cout << "|                                                            |\n";
-    std::cout << "|  Capacidade do buffer: " << BUFFER_CAPACITY << " paginas"
-              << "                           |\n";
-    std::cout << "+============================================================+\n\n";
+    std::cout << "+" << std::string(W, '=') << "+\n";
+    std::cout << "|" << std::string(W, ' ') << "|\n";
+    std::cout << "|" << std::left << std::setw(W) << "           GERENCIADOR DE BUFFER - SGBD 2026.1" << std::right << "|\n";
+    std::cout << "|" << std::left << std::setw(W) << "           Universidade Federal do Ceara (UFC)" << std::right << "|\n";
+    std::cout << "|" << std::string(W, ' ') << "|\n";
+    std::cout << "+" << std::string(W, '=') << "+\n";
+    std::cout << "|" << std::left << std::setw(W) << "  Simulador de Buffer Pool com politicas de substituicao:" << std::right << "|\n";
+    std::cout << "|" << std::left << std::setw(W) << "    * LRU  (Least Recently Used)" << std::right << "|\n";
+    std::cout << "|" << std::left << std::setw(W) << "    * FIFO (First In, First Out)" << std::right << "|\n";
+    std::cout << "|" << std::left << std::setw(W) << "    * CLOCK (Second-Chance)" << std::right << "|\n";
+    std::cout << "|" << std::left << std::setw(W) << "    * MRU  (Most Recently Used)" << std::right << "|\n";
+    std::cout << "|" << std::string(W, ' ') << "|\n";
+    std::cout << "|" << std::left << std::setw(W) << capStr << std::right << "|\n";
+    std::cout << "+" << std::string(W, '=') << "+\n\n";
 }
 
 /**

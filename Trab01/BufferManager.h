@@ -9,8 +9,7 @@
  * =============================================================================
  */
 
-#ifndef BUFFER_MANAGER_H
-#define BUFFER_MANAGER_H
+#pragma once
 
 #include "Page.h"
 #include <vector>
@@ -116,4 +115,3 @@ private:
     std::string policyName() const;
 };
 
-#endif // BUFFER_MANAGER_H

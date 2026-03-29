@@ -10,8 +10,7 @@
  * =============================================================================
  */
 
-#ifndef PAGE_H
-#define PAGE_H
+#pragma once
 
 #include <string>
 #include <cstddef>
@@ -30,4 +29,3 @@ struct Page {
     size_t    fifo_order;  // Contador de ordem de inserção — utilizado pela política FIFO
 };
 
-#endif // PAGE_H

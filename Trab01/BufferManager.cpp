@@ -12,6 +12,7 @@
 #include "BufferManager.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <algorithm>
 #include <iomanip>
 #include <stdexcept>
@@ -267,46 +268,44 @@ size_t BufferManager::selectVictimMRU() const {
 
 void BufferManager::DisplayCache() const {
     std::cout << "\n";
-    std::cout << "+==================================================================+\n";
-    std::cout << "|              ESTADO ATUAL DO BUFFER (" << policyName() << ")";
-    // Preenchimento para alinhar a borda direita
-    size_t padding = 64 - 39 - policyName().size();
-    for (size_t i = 0; i < padding; ++i) std::cout << " ";
-    std::cout << "|\n";
-    std::cout << "+==================================================================+\n";
+    std::cout << "+----------------------------------------------+\n";
+    std::cout << "|  ESTADO ATUAL DO BUFFER  [" << policyName() << "]\n";
+    std::cout << "+----------------------------------------------+\n";
 
     if (buffer_.empty()) {
-        std::cout << "|  (buffer vazio)                                                |\n";
+        std::cout << "|  (buffer vazio)                              |\n";
+        std::cout << "+----------------------------------------------+\n";
     }
 
     for (size_t i = 0; i < buffer_.size(); ++i) {
         const Page& p = buffer_[i];
-        std::cout << "|  Chave -> " << std::setw(3) << p.page_id
-                  << " | Valor -> " << std::left << std::setw(25) << p.content << std::right
-                  << " | Atualizacao -> " << (p.dirty ? "TRUE " : "FALSE");
 
-        // Exibe metadados específicos da política
+        // Monta metadado especifico da politica
+        std::ostringstream meta;
         switch (policy_) {
             case ReplacementPolicy::LRU:
             case ReplacementPolicy::MRU:
-                std::cout << " | ts=" << p.timestamp;
+                meta << "ts=" << p.timestamp;
                 break;
             case ReplacementPolicy::CLOCK:
-                std::cout << " | ref=" << (p.ref_bit ? "1" : "0");
+                meta << "ref=" << (p.ref_bit ? "1" : "0");
                 break;
             case ReplacementPolicy::FIFO:
-                std::cout << " | ord=" << p.fifo_order;
+                meta << "ord=" << p.fifo_order;
                 break;
         }
 
-        std::cout << "\n";
+        std::cout << "  [" << std::setw(2) << p.page_id << "] "
+                  << (p.dirty ? "D" : " ") << " "
+                  << std::left << std::setw(6) << meta.str() << std::right
+                  << " | " << p.content << "\n";
     }
 
-    std::cout << "+==================================================================+\n\n";
+    std::cout << "\n";
 }
 
 // =============================================================================
-// DisplayStats — Exibição de estatísticas
+// DisplayStats -- Exibicao de estatisticas
 // =============================================================================
 
 void BufferManager::DisplayStats() const {
@@ -315,16 +314,19 @@ void BufferManager::DisplayStats() const {
         ? (static_cast<double>(cacheHit_) / static_cast<double>(totalAcessos)) * 100.0
         : 0.0;
 
-    std::cout << "+==========================================+\n";
+    // Formata a taxa como string para controle preciso da largura
+    std::ostringstream taxaStr;
+    taxaStr << std::fixed << std::setprecision(2) << taxaAcerto << " %";
+
+    std::cout << "+------------------------------------------+\n";
     std::cout << "|        ESTATISTICAS DO BUFFER            |\n";
-    std::cout << "+==========================================+\n";
-    std::cout << "|  Politica      : " << std::left << std::setw(23) << policyName() << std::right << "|\n";
-    std::cout << "|  Cache Hits    : " << std::left << std::setw(23) << cacheHit_     << std::right << "|\n";
-    std::cout << "|  Cache Misses  : " << std::left << std::setw(23) << cacheMiss_    << std::right << "|\n";
-    std::cout << "|  Total Acessos : " << std::left << std::setw(23) << totalAcessos  << std::right << "|\n";
-    std::cout << "|  Taxa de Acerto: " << std::left << std::setw(20) << std::fixed
-              << std::setprecision(2) << taxaAcerto << " %" << std::right << "|\n";
-    std::cout << "+==========================================+\n\n";
+    std::cout << "+------------------------------------------+\n";
+    std::cout << "|  Politica      : " << std::left << std::setw(24) << policyName()    << std::right << "|\n";
+    std::cout << "|  Cache Hits    : " << std::left << std::setw(24) << cacheHit_        << std::right << "|\n";
+    std::cout << "|  Cache Misses  : " << std::left << std::setw(24) << cacheMiss_       << std::right << "|\n";
+    std::cout << "|  Total Acessos : " << std::left << std::setw(24) << totalAcessos     << std::right << "|\n";
+    std::cout << "|  Taxa de Acerto: " << std::left << std::setw(24) << taxaStr.str()    << std::right << "|\n";
+    std::cout << "+------------------------------------------+\n\n";
 }
 
 // =============================================================================
