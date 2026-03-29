@@ -23,21 +23,21 @@
  */
 void exibirBanner() {
     std::cout << "\n";
-    std::cout << "╔══════════════════════════════════════════════════════════════╗\n";
-    std::cout << "║                                                            ║\n";
-    std::cout << "║           GERENCIADOR DE BUFFER — SGBD 2026.1              ║\n";
-    std::cout << "║           Universidade Federal do Ceará (UFC)              ║\n";
-    std::cout << "║                                                            ║\n";
-    std::cout << "╠══════════════════════════════════════════════════════════════╣\n";
-    std::cout << "║  Simulador de Buffer Pool com políticas de substituição:   ║\n";
-    std::cout << "║    • LRU  (Least Recently Used)                            ║\n";
-    std::cout << "║    • FIFO (First In, First Out)                            ║\n";
-    std::cout << "║    • CLOCK (Second-Chance)                                 ║\n";
-    std::cout << "║    • MRU  (Most Recently Used)                             ║\n";
-    std::cout << "║                                                            ║\n";
-    std::cout << "║  Capacidade do buffer: " << BUFFER_CAPACITY << " páginas"
-              << "                            ║\n";
-    std::cout << "╚══════════════════════════════════════════════════════════════╝\n\n";
+    std::cout << "+============================================================+\n";
+    std::cout << "|                                                            |\n";
+    std::cout << "|           GERENCIADOR DE BUFFER - SGBD 2026.1              |\n";
+    std::cout << "|           Universidade Federal do Ceara (UFC)              |\n";
+    std::cout << "|                                                            |\n";
+    std::cout << "+============================================================+\n";
+    std::cout << "|  Simulador de Buffer Pool com politicas de substituicao:   |\n";
+    std::cout << "|    * LRU  (Least Recently Used)                            |\n";
+    std::cout << "|    * FIFO (First In, First Out)                            |\n";
+    std::cout << "|    * CLOCK (Second-Chance)                                 |\n";
+    std::cout << "|    * MRU  (Most Recently Used)                             |\n";
+    std::cout << "|                                                            |\n";
+    std::cout << "|  Capacidade do buffer: " << BUFFER_CAPACITY << " paginas"
+              << "                           |\n";
+    std::cout << "+============================================================+\n\n";
 }
 
 /**
@@ -59,18 +59,18 @@ ReplacementPolicy solicitarPolitica() {
     int opcao = 0;
 
     while (true) {
-        std::cout << "Selecione a política de substituição:\n";
+        std::cout << "Selecione a politica de substituicao:\n";
         std::cout << "  1 - LRU  (Least Recently Used)\n";
         std::cout << "  2 - FIFO (First In, First Out)\n";
         std::cout << "  3 - CLOCK (Second-Chance)\n";
         std::cout << "  4 - MRU  (Most Recently Used)\n";
-        std::cout << "Opção: ";
+        std::cout << "Opcao: ";
         std::cin >> opcao;
 
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "[ERRO] Entrada inválida. Tente novamente.\n\n";
+            std::cout << "[ERRO] Entrada invalida. Tente novamente.\n\n";
             continue;
         }
 
@@ -82,7 +82,7 @@ ReplacementPolicy solicitarPolitica() {
             case 3: return ReplacementPolicy::CLOCK;
             case 4: return ReplacementPolicy::MRU;
             default:
-                std::cout << "[ERRO] Opção inválida. Escolha entre 1 e 4.\n\n";
+                std::cout << "[ERRO] Opcao invalida. Escolha entre 1 e 4.\n\n";
         }
     }
 }
@@ -91,17 +91,17 @@ ReplacementPolicy solicitarPolitica() {
  * Exibe o menu principal de operações.
  */
 void exibirMenu() {
-    std::cout << "────────────────────────────────────────────\n";
-    std::cout << "  MENU DE OPERAÇÕES\n";
-    std::cout << "────────────────────────────────────────────\n";
-    std::cout << "  1 - Fetch (buscar página por chave)\n";
-    std::cout << "  2 - Fetch em sequência (lista de chaves)\n";
+    std::cout << "--------------------------------------------\n";
+    std::cout << "  MENU DE OPERACOES\n";
+    std::cout << "--------------------------------------------\n";
+    std::cout << "  1 - Fetch (buscar pagina por chave)\n";
+    std::cout << "  2 - Fetch em sequencia (lista de chaves)\n";
     std::cout << "  3 - Exibir estado do buffer (DisplayCache)\n";
-    std::cout << "  4 - Exibir estatísticas (DisplayStats)\n";
-    std::cout << "  5 - Executar sequência de teste padrão\n";
+    std::cout << "  4 - Exibir estatisticas (DisplayStats)\n";
+    std::cout << "  5 - Executar sequencia de teste padrao\n";
     std::cout << "  0 - Sair\n";
-    std::cout << "────────────────────────────────────────────\n";
-    std::cout << "Opção: ";
+    std::cout << "--------------------------------------------\n";
+    std::cout << "Opcao: ";
 }
 
 /**
@@ -115,40 +115,40 @@ void executarTestePadrao(BufferManager& bm) {
     const size_t tamanho = sizeof(sequencia) / sizeof(sequencia[0]);
 
     std::cout << "\n";
-    std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-    std::cout << "  EXECUTANDO SEQUÊNCIA DE TESTE PADRÃO\n";
-    std::cout << "  Sequência: 1, 2, 3, 4, 5, 1, 6, 2, 7, 3, 1, 8, 4, 9, 5\n";
-    std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+    std::cout << "==============================================================\n";
+    std::cout << "  EXECUTANDO SEQUENCIA DE TESTE PADRAO\n";
+    std::cout << "  Sequencia: 1, 2, 3, 4, 5, 1, 6, 2, 7, 3, 1, 8, 4, 9, 5\n";
+    std::cout << "==============================================================\n\n";
 
     for (size_t i = 0; i < tamanho; ++i) {
-        std::cout << ">>> Fetch(" << sequencia[i] << ") — Acesso #" << (i + 1) << "\n";
+        std::cout << ">>> Fetch(" << sequencia[i] << ") - Acesso #" << (i + 1) << "\n";
         std::string conteudo = bm.Fetch(sequencia[i]);
-        std::cout << "    Conteúdo: " << conteudo << "\n\n";
+        std::cout << "    Conteudo: " << conteudo << "\n\n";
 
-        // Checkpoint 1: após o 5º fetch (página 5)
+        // Checkpoint 1: apos o 5o fetch (pagina 5)
         if (i == 4) {
-            std::cout << "═══ CHECKPOINT 1 (após Fetch #5) ═══\n";
+            std::cout << "=== CHECKPOINT 1 (apos Fetch #5) ===\n";
             bm.DisplayCache();
         }
 
-        // Checkpoint 2: após o 8º fetch (página 2)
+        // Checkpoint 2: apos o 8o fetch (pagina 2)
         if (i == 7) {
-            std::cout << "═══ CHECKPOINT 2 (após Fetch #8) ═══\n";
+            std::cout << "=== CHECKPOINT 2 (apos Fetch #8) ===\n";
             bm.DisplayCache();
             bm.DisplayStats();
         }
 
-        // Checkpoint 3: após o 15º fetch (página 5) — último
+        // Checkpoint 3: apos o 15o fetch (pagina 5) - ultimo
         if (i == 14) {
-            std::cout << "═══ CHECKPOINT 3 (após Fetch #15 — final) ═══\n";
+            std::cout << "=== CHECKPOINT 3 (apos Fetch #15 - final) ===\n";
             bm.DisplayCache();
             bm.DisplayStats();
         }
     }
 
-    std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-    std::cout << "  SEQUÊNCIA DE TESTE CONCLUÍDA\n";
-    std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+    std::cout << "==============================================================\n";
+    std::cout << "  SEQUENCIA DE TESTE CONCLUIDA\n";
+    std::cout << "==============================================================\n\n";
 }
 
 // =============================================================================
@@ -178,7 +178,7 @@ int main() {
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "[ERRO] Entrada inválida.\n\n";
+            std::cout << "[ERRO] Entrada invalida.\n\n";
             continue;
         }
 
@@ -188,20 +188,20 @@ int main() {
             case 1: {
                 // Fetch individual
                 int chave;
-                std::cout << "Informe a chave da página (1-based): ";
+                std::cout << "Informe a chave da pagina (1-based): ";
                 std::cin >> chave;
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
                 std::string conteudo = bm.Fetch(chave);
                 if (!conteudo.empty()) {
-                    std::cout << "Conteúdo: " << conteudo << "\n\n";
+                    std::cout << "Conteudo: " << conteudo << "\n\n";
                 }
                 break;
             }
 
             case 2: {
                 // Fetch em sequência
-                std::cout << "Informe as chaves separadas por vírgula (ex: 1,2,3,4,5): ";
+                std::cout << "Informe as chaves separadas por virgula (ex: 1,2,3,4,5): ";
                 std::string entrada;
                 std::getline(std::cin, entrada);
 
@@ -213,10 +213,10 @@ int main() {
                         std::cout << "\n>>> Fetch(" << chave << ")\n";
                         std::string conteudo = bm.Fetch(chave);
                         if (!conteudo.empty()) {
-                            std::cout << "    Conteúdo: " << conteudo << "\n";
+                            std::cout << "    Conteudo: " << conteudo << "\n";
                         }
                     } catch (const std::exception&) {
-                        std::cout << "[ERRO] Chave inválida: '" << token << "'\n";
+                        std::cout << "[ERRO] Chave invalida: '" << token << "'\n";
                     }
                 }
                 std::cout << "\n";
@@ -239,11 +239,11 @@ int main() {
                 break;
 
             case 0:
-                std::cout << "\nEncerrando o Gerenciador de Buffer. Até logo!\n\n";
+                std::cout << "\nEncerrando o Gerenciador de Buffer. Ate logo!\n\n";
                 break;
 
             default:
-                std::cout << "[ERRO] Opção inválida.\n\n";
+                std::cout << "[ERRO] Opcao invalida.\n\n";
         }
     }
 

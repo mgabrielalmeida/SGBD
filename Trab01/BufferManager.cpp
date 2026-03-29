@@ -40,7 +40,7 @@ BufferManager::BufferManager(const std::string& caminhoArquivo, ReplacementPolic
 void BufferManager::loadFile(const std::string& caminhoArquivo) {
     std::ifstream arquivo(caminhoArquivo);
     if (!arquivo.is_open()) {
-        throw std::runtime_error("Erro: não foi possível abrir o arquivo '" + caminhoArquivo + "'.");
+        throw std::runtime_error("Erro: nao foi possivel abrir o arquivo '" + caminhoArquivo + "'.");
     }
 
     std::string linha;
@@ -49,11 +49,11 @@ void BufferManager::loadFile(const std::string& caminhoArquivo) {
     }
 
     if (fileLines_.empty()) {
-        throw std::runtime_error("Erro: o arquivo '" + caminhoArquivo + "' está vazio.");
+        throw std::runtime_error("Erro: o arquivo '" + caminhoArquivo + "' esta vazio.");
     }
 
     std::cout << "[INFO] Arquivo carregado com sucesso: " << fileLines_.size()
-              << " páginas disponíveis.\n" << std::endl;
+              << " paginas disponiveis.\n" << std::endl;
 }
 
 // =============================================================================
@@ -79,7 +79,7 @@ std::string BufferManager::Fetch(int key) {
 
     // Validação: verifica se a chave está dentro do intervalo válido (1-based)
     if (key < 1 || key > static_cast<int>(fileLines_.size())) {
-        std::cerr << "[ERRO] Página " << key << " fora do intervalo válido (1-"
+        std::cerr << "[ERRO] Pagina " << key << " fora do intervalo valido (1-"
                   << fileLines_.size() << ").\n";
         return "";
     }
@@ -92,7 +92,7 @@ std::string BufferManager::Fetch(int key) {
         // CACHE HIT — Página encontrada no buffer
         // =====================================================================
         ++cacheHit_;
-        std::cout << "[HIT]  Página " << key << " encontrada no buffer.\n";
+        std::cout << "[HIT]  Pagina " << key << " encontrada no buffer.\n";
 
         // Atualiza metadados conforme a política ativa
         switch (policy_) {
@@ -119,7 +119,7 @@ std::string BufferManager::Fetch(int key) {
     // CACHE MISS — Página não encontrada no buffer
     // =========================================================================
     ++cacheMiss_;
-    std::cout << "[MISS] Página " << key << " não encontrada. Carregando do disco...\n";
+    std::cout << "[MISS] Pagina " << key << " nao encontrada. Carregando do disco...\n";
 
     // Passo 2: Se o buffer está cheio, realiza a substituição
     if (buffer_.size() >= BUFFER_CAPACITY) {
@@ -267,23 +267,23 @@ size_t BufferManager::selectVictimMRU() const {
 
 void BufferManager::DisplayCache() const {
     std::cout << "\n";
-    std::cout << "╔══════════════════════════════════════════════════════════════════╗\n";
-    std::cout << "║              ESTADO ATUAL DO BUFFER (" << policyName() << ")";
+    std::cout << "+==================================================================+\n";
+    std::cout << "|              ESTADO ATUAL DO BUFFER (" << policyName() << ")";
     // Preenchimento para alinhar a borda direita
     size_t padding = 64 - 39 - policyName().size();
     for (size_t i = 0; i < padding; ++i) std::cout << " ";
-    std::cout << "║\n";
-    std::cout << "╠══════════════════════════════════════════════════════════════════╣\n";
+    std::cout << "|\n";
+    std::cout << "+==================================================================+\n";
 
     if (buffer_.empty()) {
-        std::cout << "║  (buffer vazio)                                                ║\n";
+        std::cout << "|  (buffer vazio)                                                |\n";
     }
 
     for (size_t i = 0; i < buffer_.size(); ++i) {
         const Page& p = buffer_[i];
-        std::cout << "║  Chave -> " << std::setw(3) << p.page_id
+        std::cout << "|  Chave -> " << std::setw(3) << p.page_id
                   << " | Valor -> " << std::left << std::setw(25) << p.content << std::right
-                  << " | Atualização -> " << (p.dirty ? "TRUE " : "FALSE");
+                  << " | Atualizacao -> " << (p.dirty ? "TRUE " : "FALSE");
 
         // Exibe metadados específicos da política
         switch (policy_) {
@@ -302,7 +302,7 @@ void BufferManager::DisplayCache() const {
         std::cout << "\n";
     }
 
-    std::cout << "╚══════════════════════════════════════════════════════════════════╝\n\n";
+    std::cout << "+==================================================================+\n\n";
 }
 
 // =============================================================================
@@ -315,16 +315,16 @@ void BufferManager::DisplayStats() const {
         ? (static_cast<double>(cacheHit_) / static_cast<double>(totalAcessos)) * 100.0
         : 0.0;
 
-    std::cout << "╔══════════════════════════════════════════╗\n";
-    std::cout << "║        ESTATÍSTICAS DO BUFFER            ║\n";
-    std::cout << "╠══════════════════════════════════════════╣\n";
-    std::cout << "║  Política      : " << std::left << std::setw(23) << policyName() << std::right << "║\n";
-    std::cout << "║  Cache Hits    : " << std::left << std::setw(23) << cacheHit_     << std::right << "║\n";
-    std::cout << "║  Cache Misses  : " << std::left << std::setw(23) << cacheMiss_    << std::right << "║\n";
-    std::cout << "║  Total Acessos : " << std::left << std::setw(23) << totalAcessos  << std::right << "║\n";
-    std::cout << "║  Taxa de Acerto: " << std::left << std::setw(20) << std::fixed
-              << std::setprecision(2) << taxaAcerto << " %" << std::right << "║\n";
-    std::cout << "╚══════════════════════════════════════════╝\n\n";
+    std::cout << "+==========================================+\n";
+    std::cout << "|        ESTATISTICAS DO BUFFER            |\n";
+    std::cout << "+==========================================+\n";
+    std::cout << "|  Politica      : " << std::left << std::setw(23) << policyName() << std::right << "|\n";
+    std::cout << "|  Cache Hits    : " << std::left << std::setw(23) << cacheHit_     << std::right << "|\n";
+    std::cout << "|  Cache Misses  : " << std::left << std::setw(23) << cacheMiss_    << std::right << "|\n";
+    std::cout << "|  Total Acessos : " << std::left << std::setw(23) << totalAcessos  << std::right << "|\n";
+    std::cout << "|  Taxa de Acerto: " << std::left << std::setw(20) << std::fixed
+              << std::setprecision(2) << taxaAcerto << " %" << std::right << "|\n";
+    std::cout << "+==========================================+\n\n";
 }
 
 // =============================================================================
