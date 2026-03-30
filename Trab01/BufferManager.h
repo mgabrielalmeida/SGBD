@@ -9,7 +9,7 @@ substituição de página: LRU, FIFO, CLOCK e MRU.
 #include "Page.h"
 #include <vector>
 #include <string>
-#include <random>
+
 
 // Capacidade máxima do buffer pool (número de páginas simultâneas)
 constexpr size_t BUFFER_CAPACITY = 5;
@@ -54,9 +54,7 @@ private:
     size_t cacheHit_;      // Contador de acertos (hits)
     size_t cacheMiss_;     // Contador de faltas (misses)
 
-    // --- Geração de valores aleatórios ---
-    std::mt19937 rng_;                           // Motor de números pseudoaleatórios
-    std::bernoulli_distribution dirtyDist_;      // Distribuição para flag dirty (50%)
+
 
     // --- Métodos auxiliares ---
 
@@ -79,4 +77,3 @@ private:
     // Retorna o nome da política como string (para exibição).
     std::string policyName() const;
 };
-

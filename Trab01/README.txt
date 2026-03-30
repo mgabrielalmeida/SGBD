@@ -118,13 +118,4 @@ MRU (Most Recently Used):
   menor probabilidade de ser reutilizada.
 
 
-FLAG DE ATUALIZAÇÃO (DIRTY BIT)
--------------------------------
-Ao carregar uma página do disco para o buffer, a flag "dirty" é atribuída
-aleatoriamente com probabilidade de 50%, utilizando std::bernoulli_distribution
-e std::mt19937 como gerador de números pseudoaleatórios. Se a flag for TRUE,
-isso indica que a página foi "modificada" e precisaria ser escrita de volta ao
-disco antes de ser removida (simulação). Na saída de evicção, páginas dirty
-são marcadas com "W" (Write-back).
-
 ================================================================================

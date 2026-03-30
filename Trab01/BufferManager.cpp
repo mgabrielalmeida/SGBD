@@ -3,7 +3,7 @@ Implementação completa da classe BufferManager. Contém a lógica de
 busca (Fetch), substituição (Evict) com quatro políticas (LRU, FIFO,
 CLOCK, MRU), exibição do cache e estatísticas de desempenho.
 */
-
+    
 #include "BufferManager.h"
 #include <iostream>
 #include <fstream>
@@ -20,8 +20,7 @@ BufferManager::BufferManager(const std::string& caminhoArquivo, ReplacementPolic
     , clockHand_(0)
     , cacheHit_(0)
     , cacheMiss_(0)
-    , rng_(std::random_device{}())
-    , dirtyDist_(0.5)
+
 {
     loadFile(caminhoArquivo);
 }
@@ -108,12 +107,12 @@ std::string BufferManager::Fetch(int key) {
 
     // Passo 3: Cria a nova página com os metadados inicializados
     Page novaPagina;
-    novaPagina.page_id    = key;
-    novaPagina.content    = fileLines_[static_cast<size_t>(key - 1)]; // Índice 0-based no vetor
-    novaPagina.dirty      = dirtyDist_(rng_);                         // Flag dirty aleatória (50%)
-    novaPagina.ref_bit    = true;                                     // CLOCK: referenciada ao carregar
-    novaPagina.timestamp  = globalClock_;                             // LRU/MRU: timestamp atual
-    novaPagina.fifo_order = insertionSeq_++;                          // FIFO: ordem de inserção
+    novaPagina.page_id = key;
+    novaPagina.content = fileLines_[static_cast<size_t>(key - 1)]; // Índice 0-based no vetor
+
+    novaPagina.ref_bit = true;                                     // CLOCK: referenciada ao carregar
+    novaPagina.timestamp = globalClock_;                             // LRU/MRU: timestamp atual
+    novaPagina.fifo_order = insertionSeq_++;                         // FIFO: ordem de inserção
 
     // Passo 4: Insere a página no buffer
     buffer_.push_back(novaPagina);
@@ -144,8 +143,7 @@ void BufferManager::Evict() {
     // Exibe informações da página evictada
     const Page& vitima = buffer_[victimIdx];
     std::cout << "[EVICT] page#=" << vitima.page_id
-              << " | " << vitima.content
-              << " | dirty=" << (vitima.dirty ? "W" : "") << "\n";
+              << " | " << vitima.content << "\n";
 
     // Remove a página do buffer
     buffer_.erase(buffer_.begin() + static_cast<std::ptrdiff_t>(victimIdx));
@@ -257,7 +255,6 @@ void BufferManager::DisplayCache() const {
         }
 
         std::cout << "  [" << std::setw(2) << p.page_id << "] "
-                  << (p.dirty ? "D" : " ") << " "
                   << std::left << std::setw(6) << meta.str() << std::right
                   << " | " << p.content << "\n";
     }
