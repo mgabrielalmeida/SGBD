@@ -12,7 +12,7 @@
 #include <cstring>
 
 std::string getBucketFileName(int bucketId) {
-    return "bucket_" + std::to_string(bucketId) + ".dat";
+    return "data/bucket_" + std::to_string(bucketId) + ".dat";
 }
 
 void initBucket(Bucket* bucket, int localDepth) {

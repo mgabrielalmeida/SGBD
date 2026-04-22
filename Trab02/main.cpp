@@ -24,9 +24,9 @@
 #include "bucket.h"
 #include "data_file.h"
 
-// Nomes dos arquivos de entrada e saída
-static const char* INPUT_FILE  = "in.txt";
-static const char* OUTPUT_FILE = "out.txt";
+// Nomes padrão dos arquivos de entrada e saída
+static const char* DEFAULT_INPUT_FILE  = "test_cases/inputs/in.txt";
+static const char* DEFAULT_OUTPUT_FILE = "test_cases/outputs/out.txt";
 
 /**
  * Remove espaços em branco e caracteres de controle do início e fim da string.
@@ -38,18 +38,21 @@ static std::string trim(const std::string& str) {
     return str.substr(start, end - start + 1);
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    const char* inputFile = (argc > 1) ? argv[1] : DEFAULT_INPUT_FILE;
+    const char* outputFile = (argc > 2) ? argv[2] : DEFAULT_OUTPUT_FILE;
+
     // Abre o arquivo de entrada
-    std::ifstream inFile(INPUT_FILE);
+    std::ifstream inFile(inputFile);
     if (!inFile.is_open()) {
-        std::cerr << "Erro: nao foi possivel abrir o arquivo " << INPUT_FILE << std::endl;
+        std::cerr << "Erro: nao foi possivel abrir o arquivo " << inputFile << std::endl;
         return 1;
     }
 
     // Abre o arquivo de saída
-    std::ofstream outFile(OUTPUT_FILE);
+    std::ofstream outFile(outputFile);
     if (!outFile.is_open()) {
-        std::cerr << "Erro: nao foi possivel criar o arquivo " << OUTPUT_FILE << std::endl;
+        std::cerr << "Erro: nao foi possivel criar o arquivo " << outputFile << std::endl;
         inFile.close();
         return 1;
     }
@@ -156,7 +159,7 @@ int main() {
     freeDirectory(&dir);
 
     std::cout << "Processamento concluido. " << opCount << " operacoes executadas." << std::endl;
-    std::cout << "Resultados gravados em " << OUTPUT_FILE << std::endl;
+    std::cout << "Resultados gravados em " << outputFile << std::endl;
 
     return 0;
 }

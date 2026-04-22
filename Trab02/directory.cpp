@@ -12,7 +12,7 @@
 #include <cstring>
 
 // Nome do arquivo de diretório em disco
-static const char* DIRECTORY_FILE_NAME = "directory.dat";
+static const char* DIRECTORY_FILE_NAME = "data/directory.dat";
 
 int hashFunction(int linhaNum, int depth) {
     if (depth == 0) return 0;

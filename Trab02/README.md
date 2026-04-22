@@ -27,9 +27,9 @@ Apenas **uma página de dados** pode estar em memória por vez (exceto o diretó
 
 | Arquivo | Descrição |
 |---|---|
-| `directory.dat` | Diretório do índice hash (binário) |
-| `bucket_N.dat` | Arquivo de cada bucket (binário) |
-| `out.txt` | Resultado das operações executadas |
+| `data/directory.dat` | Diretório do índice hash (binário) |
+| `data/bucket_N.dat` | Arquivo de cada bucket (binário) |
+| `test_cases/outputs/out.txt` | Resultado das operações executadas |
 
 ---
 
@@ -49,9 +49,11 @@ g++ -std=c++11 -Wall -o sgbd main.cpp hash_index.cpp directory.cpp bucket.cpp da
 
 ## Execução
 
-1. Coloque o arquivo `in.txt` com as operações no mesmo diretório do executável.
-2. Coloque o arquivo `bd-trab2-dataset.csv` com os dados no mesmo diretório.
-3. Execute:
+1. Coloque os arquivos de entrada (ex: `in.txt`) na pasta `test_cases/inputs/`.
+   - Você também pode passar caminhos customizados via terminal: `./sgbd <caminho_entrada> <caminho_saida>`.
+2. Coloque o arquivo `bd-trab2-dataset.csv` com os dados no mesmo diretório do arquivo executável principal.
+3. Certifique-se de que as pastas `data/`, `test_cases/inputs/` e `test_cases/outputs/` existam. 
+4. Execute:
 
 ```bash
 # Linux/macOS
@@ -61,7 +63,7 @@ g++ -std=c++11 -Wall -o sgbd main.cpp hash_index.cpp directory.cpp bucket.cpp da
 sgbd.exe
 ```
 
-4. O resultado será gravado em `out.txt`.
+5. O resultado padrão será gravado em `test_cases/outputs/out.txt` caso nenhum argumento seja passado.
 
 ---
 

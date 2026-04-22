@@ -44,12 +44,12 @@ run: $(TARGET)
 # Limpa arquivos compilados e dados gerados
 clean:
 	rm -f $(OBJECTS) $(TARGET) $(TARGET).exe
-	rm -f directory.dat bucket_*.dat
-	rm -f out.txt
+	rm -f data/directory.dat data/bucket_*.dat
+	rm -f test_cases/outputs/out.txt
 
 # Limpa apenas os dados do índice (mantém o executável)
 clean-data:
-	rm -f directory.dat bucket_*.dat
-	rm -f out.txt
+	rm -f data/directory.dat data/bucket_*.dat
+	rm -f test_cases/outputs/out.txt
 
 .PHONY: all run clean clean-data
