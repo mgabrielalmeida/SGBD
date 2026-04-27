@@ -7,14 +7,14 @@
 int main() {
     Directory dir;
     if (!loadDirectory(&dir)) {
-        std::cerr << "Cannot load directory" << std::endl;
+        std::cerr << "Erro: nao foi possivel carregar o indice" << std::endl;
         return 1;
     }
 
-    std::cout << "=== DIRECTORY ===" << std::endl;
-    std::cout << "Global Depth (PG): " << dir.globalDepth << std::endl;
-    std::cout << "Size: " << dir.size << std::endl;
-    std::cout << "Next Bucket ID: " << dir.nextBucketId << std::endl;
+    std::cout << "============ DIRETORIO ============" << std::endl;
+    std::cout << "Profundidade Global (PG): " << dir.globalDepth << std::endl;
+    std::cout << "Tamanho: " << dir.size << std::endl;
+    std::cout << "Proximo ID de Bucket: " << dir.nextBucketId << std::endl;
 
     for (int i = 0; i < dir.size; i++) {
         std::cout << "  dir[" << i << "] -> bucket_" << dir.bucketIds[i] << std::endl;
@@ -22,7 +22,7 @@ int main() {
 
     std::cout << std::endl;
 
-    // Dump each unique bucket
+    // Dump em cada bucket
     bool seen[100] = {false};
     for (int i = 0; i < dir.size; i++) {
         int bid = dir.bucketIds[i];
@@ -31,10 +31,10 @@ int main() {
 
         Bucket b;
         if (loadBucket(bid, &b)) {
-            std::cout << "=== BUCKET " << bid << " ===" << std::endl;
-            std::cout << "  Local Depth (PL): " << b.localDepth << std::endl;
-            std::cout << "  Count: " << b.count << std::endl;
-            std::cout << "  Entries: ";
+            std::cout << "============ BUCKET " << bid << " ============" << std::endl;
+            std::cout << "Profundidade Local (PL): " << b.localDepth << std::endl;
+            std::cout << "Contagem: " << b.count << std::endl;
+            std::cout << "Entradas: ";
             for (int j = 0; j < b.count; j++) {
                 std::cout << b.entries[j].linhaNum << " ";
             }

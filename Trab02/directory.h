@@ -23,7 +23,7 @@ Cria os arquivos de bucket iniciais no disco.
 */
 void initDirectory(Directory* dir, int globalDepth);
 
-//Duplica o diretório.
+// Duplica o tamanho do diretório.
 void doubleDirectory(Directory* dir);
 
 // Salva o diretório em um .dat.

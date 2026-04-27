@@ -21,4 +21,3 @@ const int MAX_LINE_LENGTH = 4096;
  @return true se a linha foi encontrada, false caso contrário
 */
 bool getLinhaTexto(int linhaNum, std::string &outTexto);
-
