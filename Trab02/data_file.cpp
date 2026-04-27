@@ -1,9 +1,9 @@
-/**
- * data_file.cpp - Implementação do módulo de acesso ao ArquivoTexto
- *
- * Lê o arquivo bd-trab2-dataset.csv de forma sequencial, uma linha por vez,
- * respeitando a restrição de memória (apenas 1 registro em memória por vez).
- */
+/*
+data_file.cpp - Implementação do módulo de acesso ao ArquivoTexto
+
+Lê o arquivo bd-trab2-dataset.csv de forma sequencial, uma linha por vez,
+respeitando a restrição de memória (apenas 1 registro em memória por vez).
+*/
 
 #include "data_file.h"
 #include <fstream>

@@ -1,17 +1,9 @@
-/**
- * main.cpp - Ponto de entrada do programa
- *
- * Trabalho 02 - Índice Hash Extensível
- * Disciplina: Sistemas de Gerenciamento de Banco de Dados (SGBD)
- *
- * Lê o arquivo in.txt com as operações, processa cada uma delas
- * utilizando o índice hash extensível e escreve os resultados em out.txt.
- *
- * Operações suportadas:
- *   INC:x   → Inserir LinhaNum x no índice
- *   REM:x   → Remover LinhaNum x do índice
- *   BUS=:x  → Busca por igualdade de LinhaNum x
- */
+/*
+main.cpp - Ponto de entrada do programa
+
+Lê o arquivo in.txt com as operações, processa cada uma delas
+utilizando o índice hash extensível e escreve os resultados em out.txt.
+*/
 
 #include <iostream>
 #include <fstream>
@@ -28,9 +20,7 @@
 static const char* DEFAULT_INPUT_FILE  = "test_cases/inputs/in.txt";
 static const char* DEFAULT_OUTPUT_FILE = "test_cases/outputs/out.txt";
 
-/**
- * Remove espaços em branco e caracteres de controle do início e fim da string.
- */
+// Remove espaços em branco e caracteres de controle do início e fim da string.
 static std::string trim(const std::string& str) {
     size_t start = str.find_first_not_of(" \t\r\n");
     if (start == std::string::npos) return "";
@@ -57,9 +47,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // ----------------------------------------------------------------
     // 1. Lê a primeira linha: PG/<profundidade_global_inicial>
-    // ----------------------------------------------------------------
     std::string firstLine;
     std::getline(inFile, firstLine);
     firstLine = trim(firstLine);
@@ -78,18 +66,14 @@ int main(int argc, char* argv[]) {
     // Escreve a primeira linha no out.txt (idêntica ao in.txt)
     outFile << firstLine << std::endl;
 
-    // ----------------------------------------------------------------
     // 2. Inicializa o diretório do índice hash
-    // ----------------------------------------------------------------
     Directory dir;
     initDirectory(&dir, globalDepth);
 
     std::cout << "Indice hash extensivel inicializado com PG=" << globalDepth << std::endl;
     std::cout << "Diretorio com " << dir.size << " entradas" << std::endl;
 
-    // ----------------------------------------------------------------
     // 3. Processa cada operação do arquivo de entrada
-    // ----------------------------------------------------------------
     std::string line;
     int opCount = 0;
 
@@ -146,14 +130,10 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    // ----------------------------------------------------------------
     // 4. Escreve a última linha: P:/<profundidade_global_final>
-    // ----------------------------------------------------------------
     outFile << "P:/" << dir.globalDepth << std::endl;
 
-    // ----------------------------------------------------------------
     // 5. Limpeza e finalização
-    // ----------------------------------------------------------------
     inFile.close();
     outFile.close();
     freeDirectory(&dir);

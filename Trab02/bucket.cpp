@@ -1,10 +1,10 @@
 /**
- * bucket.cpp - Implementação do módulo de gerenciamento de buckets
- *
- * Gerencia a leitura/escrita de buckets individuais em disco.
- * Cada bucket é um arquivo binário separado.
- * Garante que apenas 1 bucket esteja em memória por vez.
- */
+bucket.cpp - Implementação do módulo de gerenciamento de buckets
+
+Gerencia a leitura/escrita de buckets individuais em disco.
+Cada bucket é um arquivo binário separado.
+Garante que apenas 1 bucket esteja em memória por vez.
+*/
 
 #include "bucket.h"
 #include <fstream>

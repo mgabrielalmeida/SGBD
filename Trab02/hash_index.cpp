@@ -1,9 +1,9 @@
-/**
- * hash_index.cpp - Implementação do módulo central do índice hash extensível
- *
- * Implementa inserção (com split e duplicação), remoção e busca.
- * Respeita a restrição de memória: apenas 1 bucket em memória por vez.
- */
+/*
+hash_index.cpp - Implementação do módulo central do índice hash extensível
+
+Implementa inserção (com split e duplicação), remoção e busca.
+Respeita a restrição de memória: apenas 1 bucket em memória por vez.
+*/
 
 #include "hash_index.h"
 #include "data_file.h"
@@ -11,30 +11,23 @@
 #include <cstring>
 
 // Tamanho máximo para armazenamento temporário durante redistribuições encadeadas
-// (suficiente para múltiplos splits consecutivos)
 static const int MAX_TEMP_ENTRIES = 64;
 
-/**
- * Estrutura temporária de bucket que permite mais de BUCKET_CAPACITY entradas.
- * Usada apenas durante o processo de redistribuição (split).
- */
+// Estrutura temporária de bucket que permite mais de BUCKET_CAPACITY entradas.
+// Usada apenas durante o processo de redistribuição (split).
 struct TempBucket {
     int localDepth;
     int count;
     int entries[MAX_TEMP_ENTRIES];
 };
 
-/**
- * Adiciona uma entrada a um TempBucket (sem limite de capacidade).
- */
+// Adiciona uma entrada a um TempBucket (sem limite de capacidade).
 static void addToTemp(TempBucket* tb, int val) {
     tb->entries[tb->count++] = val;
 }
 
-/**
- * Copia um TempBucket para um Bucket real (usado após redistribuição bem-sucedida).
- * Assume que tb->count <= BUCKET_CAPACITY.
- */
+// Copia um TempBucket para um Bucket real (usado após redistribuição bem-sucedida).
+// Assume que tb->count <= BUCKET_CAPACITY.
 static void copyTempToBucket(const TempBucket* tb, Bucket* b) {
     b->localDepth = tb->localDepth;
     b->count = tb->count;
@@ -46,15 +39,7 @@ static void copyTempToBucket(const TempBucket* tb, Bucket* b) {
     }
 }
 
-/**
- * Realiza a inserção com tratamento completo de overflow via split iterativo.
- * Quando o bucket destino está cheio, faz split (e possivelmente duplicação
- * de diretório) de forma iterativa até conseguir inserir o elemento.
- *
- * @param dir      Ponteiro para o diretório (em memória)
- * @param linhaNum Valor a inserir
- * @param result   Ponteiro para o resultado da inserção
- */
+// Realiza a inserção com tratamento completo de overflow via split iterativo.
 static void doInsert(Directory* dir, int linhaNum, InsertResult* result) {
     // Calcula o hash com a profundidade global atual
     int hashKey = hashFunction(linhaNum, dir->globalDepth);
@@ -75,7 +60,7 @@ static void doInsert(Directory* dir, int linhaNum, InsertResult* result) {
         return;
     }
 
-    // --- OVERFLOW: precisa de split(s) ---
+    // --- OVERFLOW: precisa de split ---
 
     // Coleta todas as entradas do bucket + a nova entrada
     int allEntries[MAX_TEMP_ENTRIES];
@@ -146,7 +131,7 @@ static void doInsert(Directory* dir, int linhaNum, InsertResult* result) {
 
         // Verifica se a redistribuição resolveu o overflow
         if (tbOld.count <= BUCKET_CAPACITY && tbNew.count <= BUCKET_CAPACITY) {
-            // Sucesso! Copia para buckets reais e salva em disco
+            // Sucesso -> copia para buckets reais e salva em disco
             Bucket bOld, bNew;
             copyTempToBucket(&tbOld, &bOld);
             copyTempToBucket(&tbNew, &bNew);
@@ -167,11 +152,11 @@ static void doInsert(Directory* dir, int linhaNum, InsertResult* result) {
             return;
         }
 
-        // Ainda há overflow — todas (ou quase todas) foram para o mesmo bucket.
+        // Ainda há overflow - todas (ou quase todas) foram para o mesmo bucket.
         // Salva o bucket que NÃO estourou e continua o loop para o que estourou.
 
         if (tbOld.count > BUCKET_CAPACITY) {
-            // O bucket original ainda tem overflow → salva o novo (pode estar vazio)
+            // O bucket original ainda tem overflow -> salva o novo (pode estar vazio)
             Bucket bNew;
             copyTempToBucket(&tbNew, &bNew);
             saveBucket(newBucketId, &bNew);
@@ -182,9 +167,10 @@ static void doInsert(Directory* dir, int linhaNum, InsertResult* result) {
                 allEntries[i] = tbOld.entries[i];
             }
             currentLocalDepth = newLocalDepth;
-            // O bucketId permanece o mesmo — precisa de mais um split
-        } else {
-            // O novo bucket tem overflow → salva o original
+            // O bucketId permanece o mesmo - precisa de mais um split
+        } 
+        else {
+            // O novo bucket tem overflow -> salva o original
             Bucket bOld;
             copyTempToBucket(&tbOld, &bOld);
             saveBucket(bucketId, &bOld);
@@ -217,13 +203,13 @@ InsertResult insertEntry(Directory* dir, int linhaNum) {
 RemoveResult removeEntry(Directory* dir, int linhaNum) {
     RemoveResult result;
 
-    // 1. Calcula o hash
+    // Calcula o hash
     int hashKey = hashFunction(linhaNum, dir->globalDepth);
 
-    // 2. Obtém o ID do bucket
+    // Obtém o ID do bucket
     int bucketId = dir->bucketIds[hashKey];
 
-    // 3. Carrega o bucket (única página em memória)
+    // Carrega o bucket (única página em memória)
     Bucket bucket;
     if (!loadBucket(bucketId, &bucket)) {
         result.removedCount = 0;
@@ -232,7 +218,7 @@ RemoveResult removeEntry(Directory* dir, int linhaNum) {
         return result;
     }
 
-    // 4. Tenta remover
+    // Tenta remover
     result.globalDepth = dir->globalDepth;
     result.localDepth = bucket.localDepth;
 
@@ -250,24 +236,24 @@ SearchResult searchEntry(Directory* dir, int linhaNum) {
     SearchResult result;
     result.foundCount = 0;
 
-    // 1. Calcula o hash
+    // Calcula o hash
     int hashKey = hashFunction(linhaNum, dir->globalDepth);
 
-    // 2. Obtém o ID do bucket
+    // Obtém o ID do bucket
     int bucketId = dir->bucketIds[hashKey];
 
-    // 3. Carrega o bucket (única página em memória)
+    // Carrega o bucket (única página em memória)
     Bucket bucket;
     if (!loadBucket(bucketId, &bucket)) {
         return result;
     }
 
-    // 4. Procura no bucket
+    // Procura no bucket
     int idx = findInBucket(&bucket, linhaNum);
 
     if (idx >= 0) {
         result.foundCount = 1;
-        // Bucket já saiu de escopo — agora carregamos a página do CSV
+        // Bucket já saiu de escopo - agora carregamos a página do CSV
         getLinhaTexto(linhaNum, result.linhaTexto);
     }
 

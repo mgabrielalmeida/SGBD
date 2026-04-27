@@ -1,9 +1,9 @@
-/**
- * directory.cpp - Implementação do módulo de gerenciamento do diretório
- *
- * Gerencia o diretório do índice hash extensível em memória e em disco.
- * O diretório pode ficar inteiramente em memória (exceção permitida).
- */
+/*
+directory.cpp - Implementação do módulo de gerenciamento do diretório
+
+Gerencia o diretório do índice hash extensível em memória e em disco.
+O diretório pode ficar inteiramente em memória (exceção permitida).
+*/
 
 #include "directory.h"
 #include "bucket.h"

@@ -16,7 +16,7 @@ HEADERS = hash_index.h directory.h bucket.h data_file.h
 OBJECTS = $(SOURCES:.cpp=.o)
 
 # Regra principal
-all: $(TARGET)
+all: $(TARGET) debug_dump
 
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS)
@@ -37,19 +37,27 @@ bucket.o: bucket.cpp bucket.h
 data_file.o: data_file.cpp data_file.h
 	$(CXX) $(CXXFLAGS) -c data_file.cpp
 
+# Debug dump - mostra o estado do diretório e buckets em disco
+debug_dump: debug_dump.cpp directory.o bucket.o
+	$(CXX) $(CXXFLAGS) -o debug_dump debug_dump.cpp directory.o bucket.o
+
 # Executa o programa
 run: $(TARGET)
-	./$(TARGET)
+	$(TARGET).exe
 
 # Limpa arquivos compilados e dados gerados
 clean:
-	rm -f $(OBJECTS) $(TARGET) $(TARGET).exe
-	rm -f data/directory.dat data/bucket_*.dat
-	rm -f test_cases/outputs/out.txt
+	-del /f /q *.o $(TARGET).exe debug_dump.exe 2>nul
+	-del /f /q data\directory.dat data\bucket_*.dat 2>nul
+	-del /f /q test_cases\outputs\out.txt 2>nul
 
 # Limpa apenas os dados do índice (mantém o executável)
 clean-data:
-	rm -f data/directory.dat data/bucket_*.dat
-	rm -f test_cases/outputs/out.txt
+	-del /f /q data\directory.dat data\bucket_*.dat 2>nul
+	-del /f /q test_cases\outputs\out.txt 2>nul
 
-.PHONY: all run clean clean-data
+# Executa o debug dump
+dump: debug_dump
+	debug_dump.exe
+
+.PHONY: all run clean clean-data dump
