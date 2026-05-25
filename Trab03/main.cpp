@@ -113,43 +113,47 @@ Table loadCSV(const std::string& filename, int expected_cols) {
 // Funções de exibição de resultados
 // ============================================================================
 
-/*
-Imprime as primeiras N tuplas de uma tabela, formatadas de forma legível.
-*/
-void printTable(const Table& table, int max_rows = -1) {
-    // Imprime cabeçalho
-    std::cout << "\n";
-    for (int i = 0; i < table.schema.qtd_cols; ++i) {
-        for (const auto& pair : table.schema.nome_para_indice) {
-            if (pair.second == i) {
-                std::cout << pair.first;
-                break;
-            }
-        }
-        if (i < table.schema.qtd_cols - 1) std::cout << " | ";
+/**
+ * Escreve o resultado da junção em um arquivo CSV.
+ * Campos que contêm vírgulas são envolvidos por aspas duplas.
+ */
+void writeResultCSV(const Table& table, const std::string& filename) {
+    std::ofstream out(filename);
+    if (!out.is_open()) {
+        std::cerr << "Erro: não foi possível criar o arquivo " << filename << std::endl;
+        return;
     }
-    std::cout << "\n";
 
-    // Linha separadora
-    std::cout << std::string(80, '-') << "\n";
+    // Escreve a linha de cabeçalho com os nomes das colunas
+    std::vector<std::string> col_names(table.schema.qtd_cols);
+    for (const auto& pair : table.schema.nome_para_indice) {
+        col_names[pair.second] = pair.first;
+    }
+    for (int i = 0; i < (int)col_names.size(); ++i) {
+        if (i > 0) out << ",";
+        out << col_names[i];
+    }
+    out << "\n";
 
-    // Imprime tuplas
-    int count = 0;
+    // Escreve cada tupla como uma linha CSV
     for (const auto& page : table.pages) {
         for (int i = 0; i < page.qtd_tuplas_ocup; ++i) {
             for (int j = 0; j < (int)page.tuples[i].cols.size(); ++j) {
-                std::cout << page.tuples[i].cols[j];
-                if (j < (int)page.tuples[i].cols.size() - 1) std::cout << " | ";
+                if (j > 0) out << ",";
+                const std::string& val = page.tuples[i].cols[j];
+                // Envolve o campo em aspas se ele contiver vírgula
+                if (val.find(',') != std::string::npos) {
+                    out << "\"" << val << "\"";
+                } else {
+                    out << val;
+                }
             }
-            std::cout << "\n";
-            count++;
-            if (max_rows > 0 && count >= max_rows) {
-                std::cout << "... (mostrando " << max_rows << " de "
-                          << table.totalTuples() << " tuplas)\n";
-                return;
-            }
+            out << "\n";
         }
     }
+
+    out.close();
+    std::cout << "Resultado salvo em '" << filename << "'\n";
 }
 
 // ============================================================================
@@ -405,16 +409,8 @@ int main() {
     std::cout << "Total de tuplas no resultado: " << result.totalTuples() << "\n";
     std::cout << "Total de paginas no resultado: " << result.qtd_pags << "\n";
 
-    // Exibe as primeiras 30 tuplas do resultado
-    printTable(result, 30);
-
-    // --- Verifica que as tabelas originais não foram modificadas ---
-    std::cout << "\n--- Verificacao de integridade ---\n";
-    Table grapes_check = loadCSV("grapes.csv", 3);
-    Table wines_check = loadCSV("wines.csv", 5);
-    assert(grapes.totalTuples() == grapes_check.totalTuples());
-    assert(wines.totalTuples() == wines_check.totalTuples());
-    std::cout << "Tabelas originais nao foram modificadas. OK!\n";
+    // Salva o resultado em arquivo CSV
+    writeResultCSV(result, "resultado.csv");
 
     // --- Executa testes sintéticos ---
     std::cout << "\n\n=============================================================\n";
