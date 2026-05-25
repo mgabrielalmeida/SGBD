@@ -7,10 +7,11 @@ indicando se foi modificado desde o carregamento.
 
 Operações suportadas:
     - Obter referência a um frame
-    - Descarregar (flush) um frame para uma tabela destino
+    - Descarregar um frame para uma tabela destino
     - Carregar uma página de uma tabela origem para um frame
     - Limpar um frame
 */
+
 #pragma once
 
 #include <array>

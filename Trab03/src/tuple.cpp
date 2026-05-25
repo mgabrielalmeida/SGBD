@@ -26,7 +26,7 @@ Tuple Tuple::merge(const Tuple& other) const {
     return resultado;
 }
 
-// Verifica se a tupla está vazia (sem colunas)
+// Verifica se a tupla está vazia (sem colunas) 
 bool Tuple::empty() const {
     return cols.empty();
 }

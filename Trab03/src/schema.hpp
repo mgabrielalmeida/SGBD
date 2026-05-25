@@ -10,7 +10,7 @@ mapear o nome de uma coluna para seu índice no vetor de valores.
 #include <vector>
 #include <unordered_map>
 
-// Classe que representa o esquema (metadados) de uma tabela
+// Classe que representa o esquema de uma tabela
 class Schema {
 public:
     // Número de colunas no esquema

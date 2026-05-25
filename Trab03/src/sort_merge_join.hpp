@@ -5,6 +5,7 @@ Declara a função principal sortMergeJoin que realiza a junção
 de duas tabelas utilizando o algoritmo Sort-Merge Join com
 ordenação externa em duas fases (geração de runs e merge k-way).
 */
+
 #pragma once
 
 #include "schema.hpp"
@@ -14,7 +15,7 @@ ordenação externa em duas fases (geração de runs e merge k-way).
 #include "buffer_manager.hpp"
 #include "simulated_disk.hpp"
 #include <string>
-
+ 
 /*
 Executa o Sort-Merge Join entre duas tabelas.
 

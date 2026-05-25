@@ -22,7 +22,7 @@ Schema::Schema(const std::vector<std::string>& nomes_colunas)
     }
 }
 
-// Retorna o índice da coluna pelo nome; lança exceção se não existir
+// Retorna o índice da coluna pelo nome e lança exceção se não existir
 int Schema::getIndex(const std::string& col_name) const {
     auto it = nome_para_indice.find(col_name);
     if (it == nome_para_indice.end()) {

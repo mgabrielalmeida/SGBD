@@ -5,6 +5,7 @@ Uma tupla armazena os valores de uma linha da tabela
 como um vetor de strings, permitindo acesso por índice,
 merge com outra tupla e verificação de vazio.
 */
+
 #pragma once
 
 #include <string>
@@ -22,6 +23,6 @@ public:
     // Concatena esta tupla com outra, retornando uma nova tupla combinada
     Tuple merge(const Tuple& other) const;
 
-    // Verifica se a tupla está vazia (sem colunas)
+    // Verifica se a tupla está vazia (sem colunas) 
     bool empty() const;
 };

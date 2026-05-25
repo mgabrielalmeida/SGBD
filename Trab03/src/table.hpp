@@ -20,14 +20,14 @@ public:
     // Número de páginas na tabela
     int qtd_pags = 0;
 
-    // Esquema (metadados) da tabela
+    // Esquema da tabela
     Schema schema;
 
     // Adiciona uma página completa e incrementa o contador
     void addPage(const Page& p);
 
     // Retorna o total de tuplas somando todas as páginas
-    int totalTuples() const;
+    int totalTuples() const; 
 
     // Adiciona uma tupla, criando nova página se necessário
     void addTuple(const Tuple& t);

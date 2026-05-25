@@ -17,9 +17,8 @@ void Table::addPage(const Page& p) {
 // Retorna o total de tuplas somando os slots ocupados de cada página
 int Table::totalTuples() const {
     int total = 0;
-    for (const auto& page : pages) {
-        total += page.qtd_tuplas_ocup;
-    }
+    for (const auto& page : pages) total += page.qtd_tuplas_ocup;
+    
     return total;
 }
 

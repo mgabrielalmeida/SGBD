@@ -22,8 +22,7 @@ void Page::addTuple(const Tuple& t) {
 
 // Limpa a página: reseta o contador e esvazia cada slot
 void Page::clear() {
-    for (int i = 0; i < qtd_tuplas_ocup; i++) {
-        tuples[i].cols.clear();
-    }
+    for (int i = 0; i < qtd_tuplas_ocup; i++) tuples[i].cols.clear();
+    
     qtd_tuplas_ocup = 0;
 }

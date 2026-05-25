@@ -28,9 +28,8 @@ Page& BufferManager::getFrame(int frame_idx) {
 // Adiciona como nova página se o frame não estiver vazio e marca dirty como false
 void BufferManager::flushFrame(int frame_idx, Table& dest) {
     // Só adiciona à tabela se o frame contiver tuplas
-    if (frames[frame_idx].qtd_tuplas_ocup > 0) {
-        dest.addPage(frames[frame_idx]);
-    }
+    if (frames[frame_idx].qtd_tuplas_ocup > 0) dest.addPage(frames[frame_idx]);
+    
     dirty[frame_idx] = false;
 }
 

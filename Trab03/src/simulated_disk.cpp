@@ -14,7 +14,7 @@ void SimulatedDisk::write(const std::string& name, const Table& table) {
     storage[name] = table;
 }
 
-// Lê uma tabela do disco simulado
+// Lê uma tabela do disco simulado 
 // Lança exceção se a tabela não existir
 Table SimulatedDisk::read(const std::string& name) const {
     auto it = storage.find(name);

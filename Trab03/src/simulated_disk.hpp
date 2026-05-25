@@ -5,6 +5,7 @@ Simula um disco em memória usando estruturas de dados internas.
 Cada tabela é armazenada com um nome (string) como chave,
 permitindo operações de leitura, escrita, verificação e remoção.
 */
+
 #pragma once
 
 #include <string>

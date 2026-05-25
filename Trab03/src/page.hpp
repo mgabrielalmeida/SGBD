@@ -19,7 +19,7 @@ public:
     // Slots de tuplas na página
     std::array<Tuple, MAX_TUPLAS> tuples;
 
-    // Número de slots atualmente ocupados (0..12)
+    // Número de slots atualmente ocupados
     int qtd_tuplas_ocup = 0;
 
     // Verifica se a página está cheia

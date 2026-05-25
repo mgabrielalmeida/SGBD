@@ -29,14 +29,12 @@ Universidade Federal do Ceará (UFC)
 #include <iostream>
 #include <functional>
 
-// ============================================================================
 // Estrutura auxiliar para o merge k-way via fila de prioridade
-// ============================================================================
 
-/**
- * Entrada do heap para o merge k-way.
- * Armazena a chave de comparação, o índice do run de origem e a tupla completa.
- */
+/*
+Entrada do heap para o merge k-way.
+Armazena a chave de comparação, o índice do run de origem e a tupla completa.
+*/
 struct HeapEntry {
     std::string key;     // Valor da chave de junção (para comparação)
     int run_idx;         // Índice do run de onde a tupla veio (0..3)
@@ -53,19 +51,19 @@ struct HeapEntry {
 // Fase 1: Ordenação Externa (External Sort)
 // ============================================================================
 
-/**
- * Realiza a ordenação externa de uma tabela usando o algoritmo de duas fases.
- *
- * Parâmetros:
- *     table      - tabela a ser ordenada (NÃO é modificada)
- *     join_col   - nome da coluna usada como chave de ordenação
- *     table_name - nome identificador (para nomear runs no disco)
- *     disk       - disco simulado para armazenamento intermediário
- *     buffer     - gerenciador de buffer com B=5 frames
- *
- * Retorna:
- *     Nome da tabela ordenada armazenada no disco simulado
- */
+/*
+Realiza a ordenação externa de uma tabela usando o algoritmo de duas fases.
+ 
+Parâmetros:
+    table      - tabela a ser ordenada (NÃO é modificada)
+    join_col   - nome da coluna usada como chave de ordenação
+    table_name - nome identificador (para nomear runs no disco)
+    disk       - disco simulado para armazenamento intermediário
+    buffer     - gerenciador de buffer com B=5 frames
+ 
+Retorna:
+    Nome da tabela ordenada armazenada no disco simulado
+*/
 static std::string externalSort(
     const Table& table,
     const std::string& join_col,
@@ -300,20 +298,20 @@ static std::string externalSort(
 // Funções auxiliares para o Merge-Join
 // ============================================================================
 
-/**
- * Coleta todas as tuplas consecutivas com a mesma chave de junção
- * a partir da posição atual na tabela, lidando com fronteiras de página.
- *
- * Parâmetros:
- *     sorted_table  - tabela ordenada de onde coletar
- *     col_idx       - índice da coluna de junção
- *     current_key   - valor da chave atual
- *     page_idx      - cursor de página (atualizado pela função)
- *     tuple_idx     - cursor de tupla dentro da página (atualizado)
- *
- * Retorna:
- *     Vetor com todas as tuplas que compartilham a mesma chave
- */
+/*
+Coleta todas as tuplas consecutivas com a mesma chave de junção
+a partir da posição atual na tabela, lidando com fronteiras de página.
+
+Parâmetros:
+    sorted_table  - tabela ordenada de onde coletar
+    col_idx       - índice da coluna de junção
+    current_key   - valor da chave atual
+    page_idx      - cursor de página (atualizado pela função)
+    tuple_idx     - cursor de tupla dentro da página (atualizado)
+
+Retorna:
+    Vetor com todas as tuplas que compartilham a mesma chave
+*/
 static std::vector<Tuple> collectGroup(
     const Table& sorted_table,
     int col_idx,
@@ -351,20 +349,20 @@ static std::vector<Tuple> collectGroup(
 // Fase 2: Merge-Join
 // ============================================================================
 
-/**
- * Realiza o merge-join entre duas tabelas ordenadas.
- *
- * Parâmetros:
- *     sorted_left_name  - nome da tabela esquerda ordenada no disco
- *     sorted_right_name - nome da tabela direita ordenada no disco
- *     join_col_left     - nome da coluna de junção na tabela esquerda
- *     join_col_right    - nome da coluna de junção na tabela direita
- *     disk              - disco simulado
- *     buffer            - gerenciador de buffer
- *
- * Retorna:
- *     Tabela resultante com a junção (esquema = concatenação dos esquemas)
- */
+/*
+Realiza o merge-join entre duas tabelas ordenadas.
+ 
+Parâmetros:
+    sorted_left_name  - nome da tabela esquerda ordenada no disco
+    sorted_right_name - nome da tabela direita ordenada no disco
+    join_col_left     - nome da coluna de junção na tabela esquerda
+    join_col_right    - nome da coluna de junção na tabela direita
+    disk              - disco simulado
+    buffer            - gerenciador de buffer
+
+Retorna:
+    Tabela resultante com a junção (esquema = concatenação dos esquemas)
+*/
 static Table mergeJoin(
     const std::string& sorted_left_name,
     const std::string& sorted_right_name,
@@ -474,15 +472,13 @@ static Table mergeJoin(
 // Função principal: sortMergeJoin
 // ============================================================================
 
-/**
- * Implementação completa do Sort-Merge Join.
- *
- * 1. Ordena externamente a tabela de uvas
- * 2. Ordena externamente a tabela de vinhos
- * 3. Realiza o merge-join entre as tabelas ordenadas
- *
- * As tabelas originais NÃO são modificadas.
- */
+/*
+Implementação completa do Sort-Merge Join.
+
+1. Ordena externamente a tabela de uvas
+2. Ordena externamente a tabela de vinhos
+3. Realiza o merge-join entre as tabelas ordenadas
+*/
 Table sortMergeJoin(
     const Table& grapes,
     const Table& wines,

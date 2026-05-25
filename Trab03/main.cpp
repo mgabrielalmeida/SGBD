@@ -1,12 +1,9 @@
 /*
-    main.cpp - Programa principal do Sort-Merge Join
+main.cpp - Programa principal do Sort-Merge Join
 
-    Lê os arquivos CSV (grapes.csv e wines.csv), carrega-os em tabelas,
-    e executa o operador Sort-Merge Join para combinar as duas tabelas
-    pela chave de junção (chave_primaria = chave_estrangeira).
-
-    Disciplina: CK0095 – Sistemas de Gerenciamento de Banco de Dados (2026.1)
-    Universidade Federal do Ceará (UFC)
+Lê os arquivos CSV (grapes.csv e wines.csv), carrega-os em tabelas,
+e executa o operador Sort-Merge Join para combinar as duas tabelas
+pela chave de junção (chave_primaria = chave_estrangeira).
 */
 
 #include "src/schema.hpp"
@@ -28,10 +25,10 @@
 // Funções auxiliares para leitura de CSV
 // ============================================================================
 
-/**
- * Faz o parsing de uma linha CSV respeitando campos entre aspas duplas.
- * Campos que contêm vírgulas são delimitados por aspas ("campo, com vírgula").
- */
+/*
+Faz o parsing de uma linha CSV respeitando campos entre aspas duplas.
+Campos que contêm vírgulas são delimitados por aspas ("campo, com vírgula").
+*/
 std::vector<std::string> parseCSVLine(const std::string& line) {
     std::vector<std::string> fields;
     std::string field;
@@ -59,11 +56,11 @@ std::vector<std::string> parseCSVLine(const std::string& line) {
     return fields;
 }
 
-/**
- * Carrega um arquivo CSV em uma Table.
- * A primeira linha do CSV é tratada como cabeçalho (nomes das colunas).
- * As linhas subsequentes são inseridas como tuplas nas páginas da tabela.
- */
+/*
+Carrega um arquivo CSV em uma Table.
+A primeira linha do CSV é tratada como cabeçalho (nomes das colunas).
+As linhas subsequentes são inseridas como tuplas nas páginas da tabela.
+*/
 Table loadCSV(const std::string& filename, int expected_cols) {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -116,9 +113,9 @@ Table loadCSV(const std::string& filename, int expected_cols) {
 // Funções de exibição de resultados
 // ============================================================================
 
-/**
- * Imprime as primeiras N tuplas de uma tabela, formatadas de forma legível.
- */
+/*
+Imprime as primeiras N tuplas de uma tabela, formatadas de forma legível.
+*/
 void printTable(const Table& table, int max_rows = -1) {
     // Imprime cabeçalho
     std::cout << "\n";
@@ -159,15 +156,14 @@ void printTable(const Table& table, int max_rows = -1) {
 // Testes
 // ============================================================================
 
-/**
- * TC1: Tabelas que requerem exatamente um passo de merge (runs <= 4).
- * Tabela pequena com poucas páginas.
- */
+/*
+TC1: Tabelas que requerem exatamente um passo de merge (runs <= 4).
+Tabela pequena com poucas páginas.
+*/
 void testTC1(SimulatedDisk& disk, BufferManager& buffer) {
     std::cout << "\n========== TC1: Um passo de merge (runs <= 4) ==========\n";
 
     // Cria tabela esquerda com 3 páginas (36 tuplas) -> 1 run (cabe em 5 frames)
-    // Usa chaves com padding para ordenação lexicográfica correta
     Schema schemaL({"id", "nome"});
     Table left;
     left.schema = schemaL;
@@ -207,10 +203,10 @@ void testTC1(SimulatedDisk& disk, BufferManager& buffer) {
     std::cout << "TC1 PASSOU!\n";
 }
 
-/**
- * TC2: Tabelas que requerem dois ou mais passos de merge (runs > 4).
- * Tabela grande que gera mais de 4 runs.
- */
+/*
+TC2: Tabelas que requerem dois ou mais passos de merge (runs > 4).
+Tabela grande que gera mais de 4 runs.
+*/
 void testTC2(SimulatedDisk& disk, BufferManager& buffer) {
     std::cout << "\n========== TC2: Múltiplos passos de merge (runs > 4) ==========\n";
 
@@ -252,9 +248,9 @@ void testTC2(SimulatedDisk& disk, BufferManager& buffer) {
     std::cout << "TC2 PASSOU!\n";
 }
 
-/**
- * TC3: Chaves de junção com muitas duplicatas para verificar produto cartesiano.
- */
+/*
+TC3: Chaves de junção com muitas duplicatas para verificar produto cartesiano.
+*/
 void testTC3(SimulatedDisk& disk, BufferManager& buffer) {
     std::cout << "\n========== TC3: Duplicatas (produto cartesiano) ==========\n";
 
@@ -299,9 +295,9 @@ void testTC3(SimulatedDisk& disk, BufferManager& buffer) {
     std::cout << "TC3 PASSOU!\n";
 }
 
-/**
- * TC4: Uma tabela com uma única página; a outra com muitas páginas.
- */
+/*
+TC4: Uma tabela com uma única página; a outra com muitas páginas.
+*/
 void testTC4(SimulatedDisk& disk, BufferManager& buffer) {
     std::cout << "\n========== TC4: Uma tabela pequena, outra grande ==========\n";
 
@@ -343,9 +339,9 @@ void testTC4(SimulatedDisk& disk, BufferManager& buffer) {
     std::cout << "TC4 PASSOU!\n";
 }
 
-/**
- * TC5: Resultado vazio (nenhuma chave em comum).
- */
+/*
+TC5: Resultado vazio (nenhuma chave em comum).
+*/
 void testTC5(SimulatedDisk& disk, BufferManager& buffer) {
     std::cout << "\n========== TC5: Resultado vazio ==========\n";
 
@@ -380,7 +376,7 @@ void testTC5(SimulatedDisk& disk, BufferManager& buffer) {
 
 int main() {
     std::cout << "=============================================================\n";
-    std::cout << "  Sort-Merge Join - SGBD (CK0095) - UFC 2026.1\n";
+    std::cout << "             Trabalho 3 - Sort-Merge Join\n";
     std::cout << "=============================================================\n";
 
     // Inicializa o disco simulado e o gerenciador de buffer
